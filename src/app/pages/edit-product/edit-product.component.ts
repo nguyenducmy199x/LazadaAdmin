@@ -5,6 +5,7 @@ import {HttpClient, HttpClientModule, HttpHeaders} from "@angular/common/http";
 import {HeaderComponent} from '../../components/header/header.component';
 import {SideMenuComponent} from '../../components/side-menu/side-menu.component';
 import {Router} from '@angular/router';
+import {BaseResponse} from '../../models/base-response';
 
 @Component({
   selector: 'app-edit-product',
@@ -18,15 +19,15 @@ import {Router} from '@angular/router';
   ]
 })
 export class EditProductComponent {
+  category: string | undefined;
+  title: string | undefined;
+  price: string | undefined;
+  describe: string | undefined;
+  image: File | undefined;
+  baseResponse: BaseResponse<any> | null | undefined;
+  public loginwarning: string | null | undefined;
 
-  product: Product | undefined
-  category: string | undefined
-  title: string | undefined
-  price: string | undefined
-  describe: string | undefined
-  image: File | undefined ;
-
-  addProductUrl = "http://localhost:8082/api/v1/product/edit-product";
+  addProductUrl = "http://localhost:8081/api/v1/product/edit-product";
   constructor(private httpClient : HttpClient, private router : Router) {
   }
   public onFileChanged(event:any) {
@@ -36,21 +37,47 @@ export class EditProductComponent {
   }
   onSubmit() {
     console.log(this.category);
-    const httpOptions = {
-      headers: new HttpHeaders({'encrypt': 'multipart/form-data'})
+    const token = sessionStorage.getItem('access_token');
+    if (token && isTokenExpired(token)) {
+      console.log('Token expired. Redirecting to login...');
+      sessionStorage.removeItem('access_token'); // Xóa token hết hạn
+      this.router.navigate(['/login']);
     }
-    const productRequest: // @ts-ignore
-      Product = new Product(this.category, this.title, this.price, this.describe);
-    let json = JSON.stringify(productRequest);
-    let formParams = new FormData();
-    // @ts-ignore
-    formParams.append('file', this.image)
-    // @ts-ignore
-    formParams.append('body', json);
-    this.httpClient.patch(this.addProductUrl, formParams, httpOptions).subscribe((res:any)=>{
-      console.log(res);
-      console.log("afafgasfasfas")
-    });
+
+    const httpOptions = {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      }
+    };
+    const productDto = new Product(this.category!, this.title!, this.price!, this.describe!);
+    const formData = new FormData();
+    // Append đối tượng productDto vào formData
+    formData.append('productDto', new Blob([JSON.stringify(productDto)], { type: 'application/json' }));
+    if (this.image) {
+      formData.append('image', this.image, this.image.name); // `image` là key, và tên file sẽ là tên của file thực tế
+    }
+    if (this.image) {
+      formData.append('image', this.image, this.image.name); // `image` là key, và tên file sẽ là tên của file thực tế
+    }else {
+      console.log('No image selected');
+    }
+    this.httpClient.post<BaseResponse<any>>(this.addProductUrl, formData, httpOptions).subscribe(
+      (res: BaseResponse<any>) => {
+        this.baseResponse = res;
+        console.log(this.baseResponse);
+        this.router.navigate(['home']);
+      },
+      (error) => {
+        console.error('Error:', error);
+        this.loginwarning = 'add product fail';
+      }
+    );
+
   }
 
+}
+function isTokenExpired(token: string): boolean {
+  const payload = JSON.parse(atob(token.split('.')[1])); // Giải mã payload
+  const exp = payload.exp * 1000; // Chuyển exp thành timestamp (milliseconds)
+  return Date.now() >= exp;
 }

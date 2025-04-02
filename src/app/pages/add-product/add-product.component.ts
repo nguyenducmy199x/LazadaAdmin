@@ -7,6 +7,8 @@ import {SideMenuComponent} from '../../components/side-menu/side-menu.component'
 import {Product} from '../../models/product';
 import {CommonModule} from '@angular/common';
 import {Router} from '@angular/router';
+import {AuthenResponse} from '../../models/authen-response';
+import {BaseResponse} from '../../models/base-response';
 
 @Component({
   selector: 'app-add-product',
@@ -25,6 +27,8 @@ export class AddProductComponent {
   price: string | undefined;
   describe: string | undefined;
   image: File | undefined;
+  baseResponse: BaseResponse<any> | null | undefined;
+  public loginwarning: string | null | undefined;
 
   addProductUrl = "http://localhost:8081/api/v1/product/add-product";
   constructor(private httpClient : HttpClient, private router : Router) {
@@ -60,15 +64,18 @@ export class AddProductComponent {
     }else {
       console.log('No image selected');
     }
-    this.httpClient.post(this.addProductUrl, formData, httpOptions).subscribe({
-      next: (res: any) => {
-        console.log(res);
-        console.log("Product added successfully.");
+    this.httpClient.post<BaseResponse<any>>(this.addProductUrl, formData, httpOptions).subscribe(
+      (res: BaseResponse<any>) => {
+        this.baseResponse = res;
+        console.log(this.baseResponse);
+        this.router.navigate(['home']);
       },
-      error: (error) => {
-        console.error('There was an error!', error);
+      (error) => {
+        console.error('Error:', error);
+        this.loginwarning = 'add product fail';
       }
-    });
+    );
+
   }
 
 }
