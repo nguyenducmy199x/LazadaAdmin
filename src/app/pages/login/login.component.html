@@ -1,0 +1,39 @@
+<div class="login-wrap">
+  <div class="login-html">
+    <div class="login-form">
+<!--      <h2  style="color:white;width: 100%"><img style="height:100px"src="/assets/images/login/logo.png"/></h2>-->
+
+      <br/>
+      <form  (ngSubmit)="onSubmit()">
+        <p style="color: red;font-family:arial;font-size:14px;">{{ loginwarning }}</p>
+        <label style="color: white"  class="form-label">Username</label>
+        <!--/*@thymesVar id="username" type=""*/-->
+        <input  type="text" [(ngModel)]="username" name="username" class="form-control" aria-describedby="helpId">
+        <br/><br/>
+        <label style="color: white"  class="form-label">Password</label>
+        <!--/*@thymesVar id="password" type=""*/-->
+        <input type="password" [(ngModel)]="password" name="password" class="form-control" aria-describedby="helpId">
+        <br/><br/>
+        <button type="submit" class="btn-submit">Submit</button>
+      </form>
+      <br>
+      <div class="hr"></div>
+      <div class="foot-lnk">
+        <a style="color: white" href="/register">Đăng kí tài khoản </a>
+        <br>
+        <br>
+        <a style="color: white" href="/ForgotPassword">Quên mật khẩu</a>
+      </div>
+      <br><br>
+      <div class="sign-up"style="font-size:12px;color:#aaa">
+        <a>If you are interested to become our partners, please write in to </a>
+        <a href=""style="color:lightblue">admincorsivalab.com</a>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  console.log("js");
+</script>
+
+

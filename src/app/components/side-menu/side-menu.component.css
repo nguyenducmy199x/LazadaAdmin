@@ -1,0 +1,25 @@
+#sidebar-menu{
+    background-color: gold;
+    height: auto;
+    margin-top: 0px;
+    min-height: 670px;
+    font-size: medium;
+    float: left;
+    width: 20%;
+}
+.nav.side-menu ul {
+  list-style-type: none !important; /* Xóa dấu chấm */
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.nav.side-menu li {
+  list-style: none !important; /* Đảm bảo xóa dấu chấm trên mỗi li */
+  margin: 0 !important; /* Xóa khoảng cách giữa các li */
+  padding: 0 !important; /* Xóa khoảng cách padding */
+}
+
+.nav.side-menu li a{
+  text-decoration: none;
+}
+
