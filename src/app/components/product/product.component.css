@@ -44,5 +44,48 @@
   border: 1px solid #4CAF50;
 }
 
+/* Container chứa danh sách sản phẩm */
+.products-container {
+  display: flex;
+  flex-wrap: wrap; /* Tự xuống dòng khi không đủ chỗ */
+  gap: 20px; /* Khoảng cách giữa các sản phẩm */
+  justify-content: flex-start; /* Dàn sản phẩm từ trái sang phải */
+}
+
+/* Mỗi sản phẩm */
+.item {
+  background: #fff;
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  width: 250px; /* Định kích thước cố định */
+}
+
+/* Bỏ dấu chấm của ul */
+.item ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Căn chỉnh text */
+.item-title {
+  font-size: 20px;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.item-price {
+  font-size: 20px;
+  color: #f57224;
+  font-weight: bold;
+}
+
+.item-orders {
+  color: gray;
+  font-size: 16px;
+}
+
 
 /*-----Pagination-----*/
