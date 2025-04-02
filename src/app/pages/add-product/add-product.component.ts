@@ -56,9 +56,7 @@ export class AddProductComponent {
     const formData = new FormData();
     // Append đối tượng productDto vào formData
     formData.append('productDto', new Blob([JSON.stringify(productDto)], { type: 'application/json' }));
-    if (this.image) {
-      formData.append('image', this.image, this.image.name); // `image` là key, và tên file sẽ là tên của file thực tế
-    }
+
     if (this.image) {
       formData.append('image', this.image, this.image.name); // `image` là key, và tên file sẽ là tên của file thực tế
     }else {
