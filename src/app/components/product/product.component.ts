@@ -33,7 +33,6 @@ export class ProductComponent implements OnInit {
   electronicDeviceProductsUrl: string = "http://localhost:8081/api/v1/product/get-products-by-category";
   pagingationUrl: string = "http://localhost:8081/api/v1/product/get-product-by-title-and-by-paging-number";
 
-  private product: ProductImg | undefined;
   currentPage = 0;
 
   choosePage(page: number) {
@@ -63,38 +62,47 @@ export class ProductComponent implements OnInit {
     }
 
   }
-  getPageProducts(pageOnClick: string){
+  getPageProducts(pageOnClick: string) {
     const categoryRequest = "Electronics Device";
     const token = sessionStorage.getItem('access_token');
+
     if (token && isTokenExpired(token)) {
       console.log('Token expired. Redirecting to login...');
-      sessionStorage.removeItem('access_token'); // Xóa token hết hạn
+      sessionStorage.removeItem('access_token');
       this.router.navigate(['/login']);
     }
+
     const httpOptions = {
       headers: {
         'Authorization': `Bearer ${token}`,
       }
     };
 
-    // pagingation
     const pageProductRequest = new PageProductRequest(pageOnClick, "smartphone", "10");
-    // @ts-ignore
-    this.http.post(this.pagingationUrl, pageProductRequest, httpOptions).subscribe((res: ProductImg[]) => {
-      var list = new Array();
-      console.log(res)
-      for (var i = 0; i < res.length; i++) {
-        this.imageShow = this.sanitizer.bypassSecurityTrustUrl(this.imageType + res[i].image);
-        // console.log(res[i].image);
 
-        // @ts-ignore
-        this.product = new Product(res[i].category, res[i].title, res[i].price, res[i].describe, this.imageShow);
-        // console.log(this.product);
-        list.push(this.product);
-      }
-      this.products = list;
-    });
+    this.http.post<ProductImg[]>(this.pagingationUrl, pageProductRequest, httpOptions)
+      .subscribe((res) => {
+        this.products = res.map(item => {
+          let imageType = 'jpeg'; // Mặc định JPEG
+          if (item.image?.startsWith('/9j/')) {
+            imageType = 'jpeg';
+          } else if (item.image?.startsWith('iVBORw')) {
+            imageType = 'png';
+          }
+
+          // Không cần `bypassSecurityTrustUrl()`, chỉ nối chuỗi Base64
+          let imageUrl = item.image
+            ? `data:image/${imageType};base64,${item.image}`
+            : 'assets/default-image.jpg'; // Ảnh mặc định
+
+          return new ProductImg(item.category, item.title, item.price, item.describe, imageUrl);
+        });
+
+        console.log(this.products);
+      });
   }
+
+
 }
 function isTokenExpired(token: string): boolean {
   const payload = JSON.parse(atob(token.split('.')[1])); // Giải mã payload
