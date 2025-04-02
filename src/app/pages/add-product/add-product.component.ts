@@ -14,22 +14,19 @@ import {Router} from '@angular/router';
   standalone: true,
   imports: [
     HttpClientModule,
-    HeaderComponent,
     SideMenuComponent,
     FormsModule
   ],
   styleUrls: ['./add-product.component.css']
 })
 export class AddProductComponent {
-  product: Product | undefined
-  category: string | undefined
-  title: string | undefined
-  price: string | undefined
-  describe: string | undefined
-  image: File | undefined ;
-  form: FormGroup | undefined;
+  category: string | undefined;
+  title: string | undefined;
+  price: string | undefined;
+  describe: string | undefined;
+  image: File | undefined;
 
-  addProductUrl = "http://localhost:8082/api/v1/product/add-product";
+  addProductUrl = "http://localhost:8081/api/v1/product/add-product";
   constructor(private httpClient : HttpClient, private router : Router) {
   }
   public onFileChanged(event:any) {
@@ -39,21 +36,35 @@ export class AddProductComponent {
   }
   onSubmit() {
     console.log(this.category);
-    const httpOptions = {
-      headers: new HttpHeaders({'encrypt': 'multipart/form-data'})
+    const token = sessionStorage.getItem('access_token');
+    if (token && isTokenExpired(token)) {
+      console.log('Token expired. Redirecting to login...');
+      sessionStorage.removeItem('access_token'); // Xóa token hết hạn
+      this.router.navigate(['/login']);
     }
-    const productRequest: // @ts-ignore
-      Product = new Product(this.category, this.title, this.price, this.describe);
-    let json = JSON.stringify(productRequest);
-    let formParams = new FormData();
-    // @ts-ignore
-    formParams.append('file', this.image)
-    // @ts-ignore
-    formParams.append('body', json);
-    this.httpClient.post(this.addProductUrl, formParams, httpOptions).subscribe((res:any)=>{
+
+    const httpOptions = {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      }
+    };
+    const productDto = new Product(this.category!, this.title!, this.price!, this.describe!);
+    const formData = new FormData();
+    // Append đối tượng productDto vào formData
+    formData.append('productDto', new Blob([JSON.stringify(productDto)], { type: 'application/json' }));
+
+    if (this.image) {
+      formData.append('image', this.image, this.image.name); // `image` là key, và tên file sẽ là tên của file thực tế
+    }
+    this.httpClient.post(this.addProductUrl, formData, httpOptions).subscribe((res:any)=>{
       console.log(res);
       console.log("afafgasfasfas")
     });
   }
 
+}
+function isTokenExpired(token: string): boolean {
+  const payload = JSON.parse(atob(token.split('.')[1])); // Giải mã payload
+  const exp = payload.exp * 1000; // Chuyển exp thành timestamp (milliseconds)
+  return Date.now() >= exp;
 }

@@ -38,7 +38,9 @@ export class LoginComponent implements OnInit {
     this.http.post(this.authenticateUrl, authen).subscribe((res: AuthenResponse) => {
       console.log(res);
       this.authenResponse = new AuthenResponse(res);
-      console.log("object mapping result is - " + this.authenResponse.getJwtToken);
+      console.log("object mapping result is - " + this.authenResponse.getJwtToken());
+      sessionStorage.setItem('access_token', this.authenResponse.getJwtToken());
+
       console.log(this.authenResponse.code)
       if (this.authenResponse.code === '200') {
         this.router.navigate(['home']);

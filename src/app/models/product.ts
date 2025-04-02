@@ -1,8 +1,13 @@
 export class Product {
-    constructor(
-      public category: string,
-      public title: string,
-      public price: string,
-      public describe: string
-    ) {}
+  category: string | undefined;
+  title: string | undefined;
+  price: string | undefined;
+  describe: string | undefined;
+
+  constructor(category: string, title: string, price: string, describe: string) {
+    this.category = category;
+    this.title = title;
+    this.price = price;
+    this.describe = describe;
+  }
 }

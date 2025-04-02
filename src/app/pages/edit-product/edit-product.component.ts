@@ -13,7 +13,6 @@ import {Router} from '@angular/router';
   standalone: true,
   imports: [
     HttpClientModule,
-    HeaderComponent,
     SideMenuComponent,
     FormsModule
   ]
