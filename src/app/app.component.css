@@ -1,0 +1,6 @@
+app-side-menu {
+  display: block;
+  width: 100%; /* Đảm bảo nó không bị kéo dãn */
+  height: 100vh; /* Cố định chiều cao */
+  background: gold;
+}

@@ -15,7 +15,7 @@ import {ProductComponent} from '../../components/product/product.component';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
   standalone: true,
-  imports: [CommonModule, HttpClientModule, SideMenuComponent, ProductComponent]
+  imports: [CommonModule, HttpClientModule, ProductComponent, HeaderComponent, SideMenuComponent]
 })
 export class HomeComponent implements OnInit {
   //declare a variable to store api data
