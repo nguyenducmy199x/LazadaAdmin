@@ -9,14 +9,13 @@ import {SideMenuComponent} from '../../components/side-menu/side-menu.component'
 import {HttpClient, HttpClientModule} from '@angular/common/http';
 import {Router} from '@angular/router';
 import {ProductComponent} from '../../components/product/product.component';
-import {BannerComponent} from '../../components/banner/banner.component';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
   standalone: true,
-  imports: [CommonModule, HttpClientModule, ProductComponent, HeaderComponent, SideMenuComponent, BannerComponent]
+  imports: [CommonModule, HttpClientModule, ProductComponent, HeaderComponent, SideMenuComponent]
 })
 export class HomeComponent implements OnInit {
   //declare a variable to store api data
