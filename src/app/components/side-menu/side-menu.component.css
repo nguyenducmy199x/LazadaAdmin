@@ -18,5 +18,12 @@
 }
 
 
+.logo img {
+  width: 80%; /* Logo chiếm 80% chiều rộng sidebar */
+  max-width: 180px; /* Giới hạn kích thước tối đa */
+  height: auto; /* Giữ nguyên tỷ lệ ảnh */
+  display: block; /* Tránh lỗi inline */
+  margin-right: 350px;
+}
 
 

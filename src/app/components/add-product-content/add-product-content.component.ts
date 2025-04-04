@@ -9,7 +9,6 @@ import {Product} from '../../models/product';
   selector: 'app-add-product-content',
   imports: [
     HttpClientModule,
-    SideMenuComponent,
     FormsModule
   ],
   templateUrl: './add-product-content.component.html',
@@ -56,6 +55,7 @@ export class AddProductContentComponent {
     }else {
       console.log('No image selected');
     }
+
     this.httpClient.post(this.addProductUrl, formData, httpOptions).subscribe({
       next: (res: any) => {
         console.log(res);

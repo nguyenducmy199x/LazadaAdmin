@@ -1,5 +1,5 @@
 .header {
-  background-color: #E3F8E0;
+  background-color: white;
   padding: 15px 0;
 }
 
@@ -29,6 +29,7 @@
 
 .header-icons a i {
   margin-right: 5px;
+  float: right;
 }
 
 .header-icons a:hover {
