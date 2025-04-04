@@ -1,10 +1,19 @@
 import { bootstrapApplication } from '@angular/platform-browser';
-import { AppComponent } from './app/app.component';
+import { importProvidersFrom } from '@angular/core';
 import { provideRouter } from '@angular/router';
-import { routes } from './app/app.routes';  // Đảm bảo bạn có file app.routes.ts chứa routes
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastrModule } from 'ngx-toastr';
+
+import { AppComponent } from './app/app.component';
+import { routes } from './app/app.routes';
 
 bootstrapApplication(AppComponent, {
   providers: [
-    provideRouter(routes)  // Cung cấp các routes cho ứng dụng
+    provideRouter(routes),
+    importProvidersFrom(
+      BrowserAnimationsModule,
+      ToastrModule.forRoot()  // ✅ Cực kỳ quan trọng
+    )
   ]
 }).catch(err => console.error(err));
+

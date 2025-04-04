@@ -58,4 +58,4 @@
 /* Optional: Add a margin to the button */
 .submit-btn:focus {
   outline: none; /* Remove outline */
-}
+}/* Đảm bảo toastr xuất hiện ở góc trên bên phải */
