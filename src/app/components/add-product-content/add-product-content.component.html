@@ -1,0 +1,31 @@
+<h1>Add Product</h1>
+<form style="margin-left: 300px" (ngSubmit)="onSubmit()" class="form-container">
+  <div class="form-group">
+    <label for="category">Category</label>
+    <input type="text" [(ngModel)]="category" name="category" id="category" class="form-input"/>
+  </div>
+
+  <div class="form-group">
+    <label for="title">Title</label>
+    <input type="text" [(ngModel)]="title" name="title" id="title" class="form-input"/>
+  </div>
+
+  <div class="form-group">
+    <label for="price">Price</label>
+    <input type="text" [(ngModel)]="price" name="price" id="price" class="form-input"/>
+  </div>
+
+  <div class="form-group">
+    <label for="describe">Describe</label>
+    <input type="text" [(ngModel)]="describe" name="describe" id="describe" class="form-input"/>
+  </div>
+
+  <div class="form-group">
+    <label>Image</label>
+    <input type="file" (change)="onFileChanged($event)" name="image"/>
+  </div>
+
+  <div class="form-group">
+    <button type="submit" class="submit-btn">Submit</button>
+  </div>
+</form>
