@@ -3,8 +3,6 @@ import {HttpClient, HttpClientModule} from "@angular/common/http";
 import {AuthenResponse} from "../../models/authen-response";
 import {Router} from "@angular/router";
 import {Authen} from '../../models/authen';
-import {HeaderComponent} from '../../components/header/header.component';
-import {SideMenuComponent} from '../../components/side-menu/side-menu.component';
 import {FormsModule} from '@angular/forms';
 import { environment } from '../../environments/environment';
 
