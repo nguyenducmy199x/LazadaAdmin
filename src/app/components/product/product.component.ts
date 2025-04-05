@@ -1,12 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpClientModule, HttpHeaders } from "@angular/common/http";
 import { DomSanitizer, SafeResourceUrl, SafeUrl } from '@angular/platform-browser';
-import { Product } from '../../models/product';
 import { PageProductRequest } from '../../models/page-product-request';
 import { ProductImg } from '../../models/productImg';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { SideMenuComponent } from '../side-menu/side-menu.component';
 
 @Component({
   selector: 'app-product',
