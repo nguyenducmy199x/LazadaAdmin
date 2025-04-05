@@ -1,12 +1,12 @@
-import {Component, OnInit} from '@angular/core';
-import {HttpClient, HttpClientModule, HttpHeaders} from "@angular/common/http";
-import {DomSanitizer, SafeResourceUrl, SafeUrl} from '@angular/platform-browser';
-import {Product} from '../../models/product';
-import {PageProductRequest} from '../../models/page-product-request';
-import {ProductImg} from '../../models/productImg';
-import {Router} from '@angular/router';
-import {CommonModule} from '@angular/common';
-import {SideMenuComponent} from '../side-menu/side-menu.component';
+import { Component, OnInit } from '@angular/core';
+import { HttpClient, HttpClientModule, HttpHeaders } from "@angular/common/http";
+import { DomSanitizer, SafeResourceUrl, SafeUrl } from '@angular/platform-browser';
+import { Product } from '../../models/product';
+import { PageProductRequest } from '../../models/page-product-request';
+import { ProductImg } from '../../models/productImg';
+import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { SideMenuComponent } from '../side-menu/side-menu.component';
 
 @Component({
   selector: 'app-product',
@@ -21,47 +21,42 @@ export class ProductComponent implements OnInit {
   public imageShow: any;
   price: string | undefined;
   products: ProductImg[] | undefined;
-  pageSize: number = 5;
+  pageSize: number = 3; // Hiển thị 3 sản phẩm trên trang
   pageOnClick: string | undefined;
   currentState: any | undefined;
   pageId: string | undefined;
   private readonly imageType: string = 'data:image/PNG;base64,';
 
-  constructor(private http: HttpClient, private sanitizer: DomSanitizer, private router : Router) {
-  }
+  currentPage = 0;
+  totalPages: number = 0; // Khởi tạo totalPages
+  displayedProducts: ProductImg[] | undefined = []; // Khởi tạo displayedProducts
 
   electronicDeviceProductsUrl: string = "http://localhost:8081/api/v1/product/get-products-by-category";
   pagingationUrl: string = "http://localhost:8081/api/v1/product/get-product-by-title-and-by-paging-number";
 
-  currentPage = 0;
+  constructor(private http: HttpClient, private sanitizer: DomSanitizer, private router: Router) { }
+
+   ngOnInit(): void {
+    this.loadProducts();
+  }
+
+  loadProducts() {
+    this.pageOnClick = this.currentPage.toString(); // Gán lại pageOnClick sau khi thay đổi trang
+    localStorage.setItem("pageOnClick", this.pageOnClick); // Lưu trang vào localStorage
+    this.getPageProducts(this.pageOnClick); // Gọi API để lấy sản phẩm
+  }
 
   choosePage(page: number) {
-    if (page >= 0 && page < this.pageSize) {
+    if (page >= 0 && page < this.totalPages) {
       this.currentPage = page;
-      console.log(`Chuyển đến trang ${page + 1}`);
-
-      this.pageOnClick = page.toString();
-      localStorage.setItem("pageOnClick", this.pageOnClick); // Lưu vào localStorage
-
-      this.getPageProducts(this.pageOnClick); // Load lại sản phẩm của trang đã chọn
+  
+      this.pageOnClick = this.currentPage.toString();
+      localStorage.setItem("pageOnClick", this.pageOnClick);
+  
+      this.getPageProducts(this.pageOnClick);
     }
   }
 
-
-
-  ngOnInit(): void {
-    let isNotYetClick = "0";
-    localStorage.getItem("pageOnClick");
-    if(localStorage.getItem("pageOnClick") != undefined){
-      // @ts-ignore
-      this.getPageProducts(localStorage.getItem("pageOnClick"));
-    }else{
-      console.log("init method");
-      console.log(isNotYetClick)
-      this.getPageProducts(isNotYetClick);
-    }
-
-  }
   getPageProducts(pageOnClick: string) {
     const categoryRequest = "Electronics Device";
     const token = sessionStorage.getItem('access_token');
@@ -70,6 +65,7 @@ export class ProductComponent implements OnInit {
       console.log('Token expired. Redirecting to login...');
       sessionStorage.removeItem('access_token');
       this.router.navigate(['/login']);
+      return; // Dừng thực hiện nếu token hết hạn
     }
 
     const httpOptions = {
@@ -78,34 +74,45 @@ export class ProductComponent implements OnInit {
       }
     };
 
-    const pageProductRequest = new PageProductRequest(pageOnClick, "smartphone", "10");
-
-    this.http.post<ProductImg[]>(this.pagingationUrl, pageProductRequest, httpOptions)
+    const pageProductRequest = new PageProductRequest(pageOnClick, "smartphone", this.pageSize.toString()); // Sử dụng pageSize
+    console.log(`Requesting data for page: ${pageOnClick}`);
+    this.http.post<{products: ProductImg[], totalItems: string}>(this.pagingationUrl, pageProductRequest, httpOptions)
       .subscribe((res) => {
-        this.products = res.map(item => {
-          let imageType = 'jpeg'; // Mặc định JPEG
+        console.log(res);
+        const totalItems = parseInt(res.totalItems, 10); // Chuyển string sang number
+        if (isNaN(totalItems)) {
+          console.error("totalItems không phải kiểu số hợp lệ:", res.totalItems);
+          return;
+        }
+        this.products = res.products.map(item => {
+          let imageType = 'jpeg';
           if (item.image?.startsWith('/9j/')) {
             imageType = 'jpeg';
           } else if (item.image?.startsWith('iVBORw')) {
             imageType = 'png';
           }
-
-          // Không cần `bypassSecurityTrustUrl()`, chỉ nối chuỗi Base64
+    
           let imageUrl = item.image
-            ? `data:image/${imageType};base64,${item.image}`
-            : 'assets/default-image.jpg'; // Ảnh mặc định
-
+          ? `data:image/${imageType};base64,${item.image}`
+          : 'assets/default-image.jpg';
           return new ProductImg(item.category, item.title, item.price, item.describe, imageUrl);
         });
 
-        console.log(this.products);
+        this.totalPages = Math.ceil(totalItems / this.pageSize); // Tính toán số trang
+        console.log('Total Pages:', this.totalPages);
+
+        this.updatePagination();
       });
   }
 
-
+  updatePagination() {
+    this.displayedProducts = this.products || [];
+  }
+  
 }
+
 function isTokenExpired(token: string): boolean {
-  const payload = JSON.parse(atob(token.split('.')[1])); // Giải mã payload
-  const exp = payload.exp * 1000; // Chuyển exp thành timestamp (milliseconds)
+  const payload = JSON.parse(atob(token.split('.')[1]));
+  const exp = payload.exp * 1000;
   return Date.now() >= exp;
 }

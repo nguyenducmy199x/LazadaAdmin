@@ -1,9 +1,19 @@
 .sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
   background: gold;
   height: 100vh;
+  width: 350px;  /* Chiều rộng 30% của viewport */
+  min-width: 250px;  /* Đảm bảo chiều rộng tối thiểu */
+  max-width: 400px;  /* Đảm bảo chiều rộng tối đa */
   color: black;
   padding: 20px;
+  box-sizing: border-box;  /* Đảm bảo padding và border không thay đổi chiều rộng */
+  z-index: 1000; /* Đảm bảo sidebar luôn ở trên cùng */
 }
+
+
 
 .sidebar .menu {
   list-style: none;
