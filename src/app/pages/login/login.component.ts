@@ -6,6 +6,7 @@ import {Authen} from '../../models/authen';
 import {HeaderComponent} from '../../components/header/header.component';
 import {SideMenuComponent} from '../../components/side-menu/side-menu.component';
 import {FormsModule} from '@angular/forms';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-login',
@@ -23,7 +24,7 @@ export class LoginComponent implements OnInit {
   public response: string | null | undefined;
   public loginwarning: string | null | undefined;
   authenResponse: AuthenResponse | null | undefined;
-  public authenticateUrl: string = "http://localhost:8081/api/v1/authen/login";
+  public authenticateUrl: string =  environment.apiUrl + "/v1/authen/login";
 
   constructor(private http: HttpClient, private router: Router) {
   }

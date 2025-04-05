@@ -8,6 +8,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Product } from '../../models/product';
 import { AlertComponent } from '../../services/alert/alert.component';
 import { AlertService } from '../../services/alert/alert.service';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-add-product-content',
@@ -28,7 +29,7 @@ export class AddProductContentComponent {
   image: File | undefined;
   warning: string | null | undefined;
 
-  addProductUrl = "http://localhost:8081/api/v1/product/add-product";
+  addProductUrl = environment.apiUrl + "/v1/product/add-product";
   constructor(private httpClient: HttpClient, private router: Router,  private alertService: AlertService) {
 
   }
