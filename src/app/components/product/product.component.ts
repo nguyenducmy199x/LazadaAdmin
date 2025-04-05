@@ -5,6 +5,7 @@ import { PageProductRequest } from '../../models/page-product-request';
 import { ProductImg } from '../../models/productImg';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-product',
@@ -29,8 +30,8 @@ export class ProductComponent implements OnInit {
   totalPages: number = 0; // Khởi tạo totalPages
   displayedProducts: ProductImg[] | undefined = []; // Khởi tạo displayedProducts
 
-  electronicDeviceProductsUrl: string = "http://localhost:8081/api/v1/product/get-products-by-category";
-  pagingationUrl: string = "http://localhost:8081/api/v1/product/get-product-by-title-and-by-paging-number";
+  electronicDeviceProductsUrl: string =  environment.apiUrl + "/v1/product/get-products-by-category";
+  pagingationUrl: string = environment.apiUrl + "/v1/product/get-product-by-title-and-by-paging-number";
 
   constructor(private http: HttpClient, private sanitizer: DomSanitizer, private router: Router) { }
 
