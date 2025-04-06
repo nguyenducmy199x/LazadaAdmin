@@ -6,7 +6,6 @@ import { CommonModule } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 
 import { Product } from '../../models/product';
-import { AlertComponent } from '../../services/alert/alert.component';
 import { AlertService } from '../../services/alert/alert.service';
 import { environment } from '../../environments/environment';
 

@@ -34,10 +34,10 @@ export class LoginComponent implements OnInit {
   public onSubmit() {
     const authen: Authen = new Authen(this.username, this.password);
     // @ts-ignore
-    this.http.post(this.authenticateUrl, authen).subscribe((res: AuthenResponse) => {
-      this.authenResponse = new AuthenResponse(res);
-      sessionStorage.setItem('access_token', this.authenResponse.getJwtToken());
-      if (this.authenResponse.code === '200') {
+    this.http.post<BaseResponse<any>>(this.authenticateUrl, authen).subscribe((res: BaseResponse<any>) => {
+      
+      sessionStorage.setItem('access_token', res.data);
+      if (res.code === '200') {
         this.router.navigate(['home']);
       }else{
         this.router.navigate(['login'])
