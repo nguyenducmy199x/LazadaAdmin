@@ -1,0 +1,40 @@
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: white;
+    height: 100vh;
+    width: 350px;  /* Chiều rộng 30% của viewport */
+    min-width: 250px;  /* Đảm bảo chiều rộng tối thiểu */
+    max-width: 400px;  /* Đảm bảo chiều rộng tối đa */
+    color: black;
+    padding: 20px;
+    box-sizing: border-box;  /* Đảm bảo padding và border không thay đổi chiều rộng */
+    z-index: 1000; /* Đảm bảo sidebar luôn ở trên cùng */
+  }
+  
+  
+  
+  .sidebar .menu {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .sidebar .menu li {
+    margin-bottom: 15px;
+  }
+  .sidebar .menu li a{
+    text-decoration: none;
+  }
+  
+  
+  .logo img {
+    width: 80%; /* Logo chiếm 80% chiều rộng sidebar */
+    max-width: 180px; /* Giới hạn kích thước tối đa */
+    height: auto; /* Giữ nguyên tỷ lệ ảnh */
+    display: block; /* Tránh lỗi inline */
+    margin-right: 350px;
+  }
+  
+  
+  
