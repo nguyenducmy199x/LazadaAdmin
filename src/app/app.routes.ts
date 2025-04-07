@@ -5,6 +5,7 @@ import { AddProductComponent } from './pages/add-product/add-product.component';
 import { EditProductComponent } from './pages/edit-product/edit-product.component';
 import { authGuard } from './services/auth.guard';
 import { loginGuard } from './services/login.guard';
+import { LazadaComponent } from './pages/lazada/lazada.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -12,6 +13,5 @@ export const routes: Routes = [
   { path: 'login', component: LoginComponent, canActivate: [loginGuard] },
   { path: 'add-product', component: AddProductComponent, canActivate: [authGuard] },
   { path: 'edit-product', component: EditProductComponent, canActivate: [authGuard] },
-    // { path: 'home', component: HomeComponent},
-    // { path: 'login', component: LoginComponent}
+  { path: 'lazada', component: LazadaComponent, canActivate: [authGuard] },
 ];

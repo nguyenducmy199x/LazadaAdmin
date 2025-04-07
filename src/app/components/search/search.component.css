@@ -1,0 +1,14 @@
+ul li {
+    list-style: none;
+    float: left;
+    padding-right: 50px;
+  }
+  
+ul {
+    float: right;
+    margin-left: -100px;
+  }
+  
+  #logo-search {
+    float: left !important;
+  }

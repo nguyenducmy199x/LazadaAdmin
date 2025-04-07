@@ -1,0 +1,22 @@
+/* Đảm bảo input search không bị tràn và hiển thị đúng */
+.search-bar {
+    display: flex;
+    align-items: center;
+    max-width: 100%;
+    margin-bottom: 10px;
+  }
+  
+  .search-bar input {
+    flex: 1;
+    max-width: 100%;
+    padding: 8px;
+  }
+  
+  /* Fix banner ảnh full chiều ngang nhưng không tràn */
+  app-banner img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+  }
+  

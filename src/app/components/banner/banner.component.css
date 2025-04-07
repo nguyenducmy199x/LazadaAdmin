@@ -1,0 +1,61 @@
+/* Container chính của carousel */
+.carousel-container {
+  position: relative;
+  width: 100%;                /* Chiếm toàn bộ chiều rộng màn hình */
+  height: 500px;              /* Chiều cao cố định cho carousel */
+  max-height: 300px;          /* Giới hạn chiều cao tối đa của banner */
+  overflow: hidden;           /* Ẩn phần ảnh bị tràn ra ngoài */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;             /* Căn giữa carousel */
+  background-color: #000;     /* Màu nền cho carousel nếu cần */
+}
+
+/* Các slide trong carousel */
+.carousel-slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  transition: transform 0.5s ease-in-out;  /* Hiệu ứng chuyển động mượt mà */
+}
+
+/* Cấu hình cho ảnh trong carousel */
+.carousel-slide img {
+  width: 100%;            /* Chiếm toàn bộ chiều rộng của carousel */
+  height: 300px;           /* Chiếm toàn bộ chiều cao của carousel */
+  object-fit: cover;      /* Đảm bảo ảnh đầy đủ mà không bị cắt */
+  object-position: center;/* Căn chỉnh ảnh vào giữa */
+}
+
+/* Các nút chuyển slide */
+.carousel-prev,
+.carousel-next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  font-size: 2rem;
+  padding: 10px;
+  cursor: pointer;
+  z-index: 10;
+  transition: background-color 0.3s ease;
+}
+
+.carousel-prev {
+  left: 10px;
+}
+
+.carousel-next {
+  right: 10px;
+}
+
+.carousel-prev:hover,
+.carousel-next:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+}

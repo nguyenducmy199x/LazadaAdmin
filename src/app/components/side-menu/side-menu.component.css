@@ -2,9 +2,9 @@
   position: fixed;
   top: 0;
   left: 0;
-  background: gold;
+  background: white;
   height: 100vh;
-  width: 300px;  /* Chiều rộng 30% của viewport */
+  width: 350px;  /* Chiều rộng 30% của viewport */
   min-width: 250px;  /* Đảm bảo chiều rộng tối thiểu */
   max-width: 400px;  /* Đảm bảo chiều rộng tối đa */
   color: black;
